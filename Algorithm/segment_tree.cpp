@@ -1,11 +1,16 @@
 #include <bits/stdc++.h>
 #define x first
 #define y second
+#define pb push_back
+#define all(x) (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
 using namespace std;
 
 typedef long long ll;
-typedef pair<int, int> p;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
 
+ll N, M, K;
 vector<ll> input;
 vector<ll> tree;
 
@@ -35,7 +40,25 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
+    cin >> N >> M >> K;
+    M += K;
+    input.resize(N + 1);
+    tree.resize(N * 4);
+    for (ll i = 1; i <= N; ++i)
+        cin >> input[i];
 
+    init_tree(1, N, 1);
+
+    while (M--) {
+        ll a, b, c;
+        cin >> a >> b >> c;
+        if (a == 1) {
+            update_tree(1, N, 1, b, c);
+            input[b] = c;
+        }
+        else
+            cout << get_sum(1, N, 1, b, c) << "\n";
+    }
 
     return 0;
 }

@@ -3,7 +3,7 @@
 #define y second
 #define pb push_back
 #define all(x) (x).begin(), (x).end()
-#define rall(x) (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
 using namespace std;
 
 typedef long long ll;

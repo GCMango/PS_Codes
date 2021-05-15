@@ -13,26 +13,20 @@ typedef pair<ll, ll> pll;
 int N, M;
 vector<vector<int>> graph;
 vector<vector<int>> dp;
-vector<int> cnt;
-vector<int> tmp;
+vector<int> color;
 
 void solve(int cur, int pnode) {
-    dp[cur][1] = 0;
+    for (int i = 0; i < M; ++i)
+        dp[cur][i] = color[i];
     for (auto next : graph[cur]) {
         if (next == pnode) continue;
         solve(next, cur);
-        for (int i = 1; i <= cnt[cur]; ++i) {
-            for (int j = 0; j <= cnt[next]; ++j) {
-                if (j)
-                    tmp[i + j] = min(tmp[i + j], dp[cur][i] + dp[next][j]);
-                else
-                    tmp[i + j] = min(tmp[i + j], dp[cur][i] + 1);
-            }
-        }
-        cnt[cur] += cnt[next];
-        for (int i = 1; i <= N; ++i) {
-            dp[cur][i] = tmp[i];
-            tmp[i] = 1e9;
+        for (int i = 0; i < M; ++i) {
+            int mn = 1e9;
+            for (int j = 0; j < M; ++j)
+                if (i != j)
+                    mn = min(mn, dp[next][j]);
+            dp[cur][i] += mn;
         }
     }
 }
@@ -41,11 +35,8 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    cin >> N >> M;
+    cin >> N;
     graph.resize(N + 1);
-    cnt.resize(N + 1, 1);
-    tmp.resize(N + 1, 1e9);
-    dp.resize(N + 1, vector<int>(N + 1, 1e9));
     for (int i = 0; i < N - 1; ++i) {
         int a, b;
         cin >> a >> b;
@@ -53,13 +44,20 @@ int main() {
         graph[b].push_back(a);
     }
 
+    cin >> M;
+    color.resize(M);
+    for (int i = 0; i < M; ++i) cin >> color[i];
+    sort(all(color));
+    M = (int)floor(log2(M)) + 1;
+    color = vector<int>(color.begin(), color.begin() + M);
+    dp.resize(N + 1, vector<int>(M, 0));
+
     solve(1, 0);
 
     int mn = 1e9;
-    for (int i = 1; i <= N; ++i)
-        mn = min(mn, dp[i][M] + (i == 1 ? 0 : 1));
-
-    cout << (mn == 1e9 ? -1 : mn) << '\n';
+    for (int i = 0; i < M; ++i)
+        mn = min(mn, dp[1][i]);
+    cout << mn << '\n';
 
     return 0;
 }

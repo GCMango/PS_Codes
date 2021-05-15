@@ -22,6 +22,8 @@ int main() {
                     dp[i][j][k] = dp[i - 1][j - 1][k - 1] + 1;
                     mx = max(mx, dp[i][j][k]);
                 }
+                else
+                    dp[i][j][k] = max(max(dp[i - 1][j][k], dp[i][j - 1][k]), dp[i][j][k - 1]);
             }
         }
     }

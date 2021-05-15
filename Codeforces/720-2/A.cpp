@@ -4,18 +4,33 @@
 #define pb push_back
 #define all(x) (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
-#define log3(x) (int)(log(x) / log(3))
 using namespace std;
 
 typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
+void solve() {
+    ll a, b;
+    cin >> a >> b;
+    if (b <= 1) {
+        cout << "NO\n";
+        return;
+    }
+    b *= 3;
+    cout << "YES\n";
+    cout << a << ' ' << a * (b - 1) << ' ' << a * b << '\n';
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    cout << log(3, 9);
+    int T;
+    cin >> T;
+    while (T--) {
+        solve();
+    }
 
     return 0;
 }

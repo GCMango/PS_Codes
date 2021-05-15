@@ -4,18 +4,32 @@
 #define pb push_back
 #define all(x) (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
-#define log3(x) (int)(log(x) / log(3))
 using namespace std;
 
 typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
+void solve() {
+    int N, ch = 1e9 + 7;
+    cin >> N;
+    vector<int> arr(N);
+    for (int i = 0; i < N; ++i) cin >> arr[i];
+
+    cout << N / 2 << '\n';
+    for (int i = 1; i < N; i += 2)
+        cout << i << ' ' << i + 1 << ' ' << min(arr[i], arr[i - 1]) << ' ' << ch << '\n';
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    cout << log(3, 9);
+    int T;
+    cin >> T;
+    while (T--) {
+        solve();
+    }
 
     return 0;
 }

@@ -3,7 +3,7 @@
 #define y second
 #define pb push_back
 #define all(x) (x).begin(), (x).end()
-#define rall(x) (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
 using namespace std;
 
 typedef long long ll;
@@ -14,7 +14,8 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-
+    int N;
+    cin >> N;
 
     return 0;
 }

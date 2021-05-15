@@ -7,15 +7,15 @@ typedef long long ll;
 typedef pair<int, int> p;
 
 int N;
-vector<p> dp;
+vector<vector<int>> dp;
 vector<vector<int>> node;
 
 void solve(int cur, int pnode) {
     for (auto next : node[cur]) {
         if (next != pnode) {
             solve(next, cur);
-            dp[cur].x += max(dp[next].x, dp[next].y);
-            dp[cur].y += dp[next].x;
+            dp[cur][0] += max(dp[next][0], dp[next][1]);
+            dp[cur][1] += dp[next][0];
         }
     }
 }
@@ -25,9 +25,9 @@ int main() {
     cin.tie(nullptr);
 
     cin >> N;
-    dp.resize(N + 1, {0, 0});
+    dp.resize(N + 1, vector<int>(2, 0));
     node.resize(N + 1);
-    for (int i = 1; i <= N; ++i) cin >> dp[i].y;
+    for (int i = 1; i <= N; ++i) cin >> dp[i][1];
 
     for (int i = 0; i < N - 1; ++i) {
         int a, b;
@@ -38,7 +38,7 @@ int main() {
 
     solve(1, 0);
 
-    cout << max(dp[1].x, dp[1].y) << "\n";
+    cout << max(dp[1][0], dp[1][1]) << "\n";
 
     return 0;
 }
