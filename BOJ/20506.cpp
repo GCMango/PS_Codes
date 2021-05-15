@@ -12,7 +12,7 @@ typedef pair<ll, ll> pll;
 
 int N;
 vector<vector<int>> graph;
-ll cnt[200001], dp[200001][2], sum_a = 0, sum_b = 0;
+ll cnt[200001], dp[200001], sum_a = 0, sum_b = 0;
 
 void solve(int cur, int pnode) {
     cnt[cur] = 1;
@@ -20,10 +20,9 @@ void solve(int cur, int pnode) {
         if (next == pnode) continue;
         solve(next, cur);
         cnt[cur] += cnt[next];
-        dp[cur][0] -= dp[next][1];
+        dp[cur] -= cnt[next] * cnt[next];
     }
-    dp[cur][0] += cnt[cur] * cnt[cur];
-    dp[cur][1] += cnt[cur] * cnt[cur];
+    dp[cur] += cnt[cur] * cnt[cur];
 }
 
 int main() {
@@ -44,7 +43,7 @@ int main() {
 
     int idx = 0, cur = 0;
     for (int i = 1; i <= N; ++i) {
-        ll a = dp[i][0] - (dp[i][0] / 2), b = dp[i][0] / 2;
+        ll a = dp[i] - (dp[i] / 2), b = dp[i] / 2;
         a *= i, b *= i;
         if (!idx) {
             sum_a += a;
@@ -54,7 +53,7 @@ int main() {
             sum_a += b;
             sum_b += a;
         }
-        cur += dp[i][0];
+        cur += dp[i];
         idx = cur % 2;
     }
     
