@@ -1,2 +1,2 @@
-# PS_Codes
+# ps-codes
 My source codes for PS.
