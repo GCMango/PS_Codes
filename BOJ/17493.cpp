@@ -10,36 +10,43 @@ typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
-int N, K, cnt[300001], dp[300001];
+int N, M, cnt = 0, dp[200001][3];
+bool check[200001];
 vector<vector<int>> graph;
 
 void solve(int cur, int pnode) {
-    cnt[cur] = dp[cur] = 1;
+    dp[cur][2] = 1;
     for (auto next : graph[cur]) {
         if (next == pnode) continue;
         solve(next, cur);
-        cnt[cur] += cnt[next];
-        dp[cur] += dp[next];
+        dp[cur][0] += min(dp[next][1], dp[next][2]);
+        dp[cur][1] += min(dp[next][2], dp[next][0]);
+        dp[cur][2] += min(dp[next][0], dp[next][1]);
     }
-    dp[cur] = dp[cur] / K + dp[cur] % K;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    cin >> N >> K; K++;
+    cin >> N >> M;
     graph.resize(N + 1);
-    for (int i = 0; i < N - 1; ++i) {
+    for (int i = 0; i < M; ++i) {
         int a, b;
         cin >> a >> b;
         graph[a].push_back(b);
         graph[b].push_back(a);
+        check[a] = true;
+        check[b] = true;
     }
 
     solve(1, 0);
 
-    cout << dp[1] << '\n';
+    for (int i = 1; i <= N; ++i)
+        if (!check[i])
+            cnt++;
+
+    cout << min({dp[1][0], dp[1][1], dp[1][2]}) + cnt << '\n';
 
     return 0;
 }
