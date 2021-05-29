@@ -43,7 +43,7 @@ int dfs(int s, int e) {
     return dp[s][e] = ans;
 }
 
-void get_line(int s, int e) {
+void traceback(int s, int e) {
     if (s >= e) return;
     if (s == e - 1) {
         cout << s << ' ' << e << '\n';
@@ -51,11 +51,11 @@ void get_line(int s, int e) {
     }
     if (last[s][e] == -1) {
         cout << s << ' ' << e << '\n';
-        get_line(s + 1, e - 1);
+        traceback(s + 1, e - 1);
     }
     else {
-        get_line(s, last[s][e]);
-        get_line(last[s][e] + 1, e);
+        traceback(s, last[s][e]);
+        traceback(last[s][e] + 1, e);
     }
 }
 
@@ -66,7 +66,7 @@ int main() {
     cin >> N >> S;
     S.insert(S.begin(), '.');
     cout << dfs(1, N) << '\n';
-    get_line(1, N);
+    traceback(1, N);
 
     return 0;
 }

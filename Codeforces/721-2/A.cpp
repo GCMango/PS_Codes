@@ -11,7 +11,9 @@ typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
 void solve() {
-    ;
+    int N;
+    cin >> N;
+    cout << ~N << '\n';
 }
 
 int main() {

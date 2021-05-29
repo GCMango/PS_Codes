@@ -20,9 +20,8 @@ int main() {
 
     int T;
     cin >> T;
-    while (T--) {
+    while (T--)
         solve();
-    }
 
     return 0;
 }

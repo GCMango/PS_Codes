@@ -11,7 +11,14 @@ typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
 void solve() {
-    ;
+    int N, input[2000];
+    pll dp[2000][2];
+    cin >> N;
+    for (int i = 0; i < N; ++i) cin >> input[i];
+    dp[0][1] = {input[0], 1};
+    for (int i = 1; i < N; ++i) {
+
+    }
 }
 
 int main() {

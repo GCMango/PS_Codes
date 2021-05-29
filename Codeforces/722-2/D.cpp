@@ -10,18 +10,21 @@ typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
-void solve() {
-    ;
+const int MOD = 998244353;
+
+int N, dp[1000001];
+
+int dfs(int n) {
+    if (n == 1) return 1;
+
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int T;
-    cin >> T;
-    while (T--)
-        solve();
+    cin >> N;
+    cout << dfs(N);
 
     return 0;
 }

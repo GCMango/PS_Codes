@@ -11,7 +11,20 @@ typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
 void solve() {
-    ;
+    int N, ans, arr[100000], mn[100000];
+    cin >> N;
+    ans = N;
+    for (int i = 0; i < N; ++i) cin >> arr[i];
+    sort(arr, arr + N);
+    mn[0] = 1e9;
+    for (int i = 1; i < N; ++i) {
+        mn[i] = min(mn[i - 1], abs(arr[i] - arr[i - 1]));
+        if (mn[i] < arr[i]) {
+            ans = i;
+            break;
+        }
+    }
+    cout << ans << '\n';
 }
 
 int main() {
