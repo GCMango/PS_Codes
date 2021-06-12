@@ -1,27 +1,25 @@
 #include <bits/stdc++.h>
 #define x first
 #define y second
-#define pb push_back
-#define all(x) (x).begin(), (x).end()
-#define rall(x) (x).rbegin(), (x).rend()
 using namespace std;
 
 typedef long long ll;
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
+typedef pair<int, int> p;
 
-int N, M;
-int depth[100001], dp[100001][2];
+int N, M, a, b, c;
+int a1, a2, b1, b2;
 vector<vector<int>> graph;
+vector<int> depth;
 
-void init_tree(int cur, int pnode) {
-    dp[cur][depth[cur] % 2]++;
+void solve(int cur, int pnode, int n) {
+    if (abs(depth[cur] - depth[n == 0 ? a : b]) % 2 == 0)
+        n == 0 ? a1++ : b1++;
+    else
+        n == 0 ? a2++ : b2++;
     for (auto next : graph[cur]) {
-        if (next == pnode) continue;
+        if (next == pnode || next == a || next == b) continue;
         depth[next] = depth[cur] + 1;
-        init_tree(next, cur);
-        dp[cur][0] += dp[next][0];
-        dp[cur][1] += dp[next][1];
+        solve(next, cur, n);
     }
 }
 
@@ -31,6 +29,7 @@ int main() {
 
     cin >> N >> M;
     graph.resize(N + 1);
+    depth.resize(N + 1, 0);
     for (int i = 0; i < N - 1; ++i) {
         int a, b;
         cin >> a >> b;
@@ -38,20 +37,16 @@ int main() {
         graph[b].push_back(a);
     }
 
-    init_tree(1, 0);
-
     while (M--) {
-        int u, v, c;
-        ll ans;
-        cin >> u >> v >> c;
-        if (depth[u] < depth[v])
-            swap(u, v);
-        int a1 = dp[u][0], a2 = dp[u][1], b1 = dp[1][0] - a1, b2 = dp[1][1] - a2;
+        cin >> a >> b >> c;
+        a1 = a2 = b1 = b2 = 0;
+        solve(a, 0, 0);
+        solve(b, 0, 1);
+        //cout << a1 << ' ' << a2 << ' ' << b1 << ' ' << b2 << "\n";
         if (c == 0)
-            ans = 1LL * a1 * b1 + 1LL * a2 * b2;
+            cout << a1 * b2 + a2 * b1 << "\n";
         else
-            ans = 1LL * a1 * b2 + 1LL * a2 * b1;
-        cout << ans << '\n';
+            cout << a1 * b1 + a2 * b2 << "\n";
     }
 
     return 0;
