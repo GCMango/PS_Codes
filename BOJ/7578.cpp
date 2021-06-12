@@ -4,15 +4,14 @@
 #define pb push_back
 #define all(x) (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
-#define compress(x) sort(all(x)), (x).erase(unique(all(x)), (x).end())
 using namespace std;
 
 typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
-int N, v[500005], a[500005], b[500005], ans[500005];
-vector<int> comp;
+int N, v[1000001], a[500005], b[500005];
+ll ans = 0;
 
 void dfs(int s, int e) {
     if (s == e) return;
@@ -22,16 +21,14 @@ void dfs(int s, int e) {
 
     int i = s, j = m + 1, idx = s, cnt = 0;
     while (i <= m || j <= e) {
-        if (i > m)
-            b[idx++] = a[j++];
-        else if (j > e)
-            b[idx++] = a[i++];
-        else if (a[i] >= a[j])
-            b[idx++] = a[i++];
-        else {
-            b[idx++] = a[j];
-            ans[a[j]] += j - i - cnt;
-            j++; cnt++;
+        if (i > m) {
+            b[idx++] = a[j++]; cnt++;
+        } else if (j > e) {
+            b[idx++] = a[i++]; ans += (ll)cnt;
+        } else if (a[i] <= a[j]) {
+            b[idx++] = a[i++]; ans += (ll)cnt;
+        } else {
+            b[idx++] = a[j++]; cnt++;
         }
     }
 
@@ -44,21 +41,17 @@ int main(){
 
 	cin >> N;
     for (int i = 1; i <= N; ++i) {
-        cin >> v[i];
-        comp.push_back(v[i]);
+        int n;
+        cin >> n;
+        v[n] = i;
     }
-
-    compress(comp);
-
     for (int i = 1; i <= N; ++i) {
-        int pos = lower_bound(all(comp), v[i]) - comp.begin();
-        v[i] = a[i] = pos + 1;
+        int n;
+        cin >> n;
+        a[i] = v[n];
     }
-
     dfs(1, N);
-
-    for (int i = 1; i <= N; ++i)
-        cout << i - ans[v[i]] << '\n';
+	cout << ans << '\n';
     
     return 0;
 }

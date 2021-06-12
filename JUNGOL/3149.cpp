@@ -10,7 +10,7 @@ typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
-int N, M, a, b, mn = 1e9, arr[20];
+int N, M, a, b, mn = 1e9, arr[3000];
 
 void dfs(int cur, int cnt) {
     if (cur == M) {
@@ -41,3 +41,4 @@ int main() {
 
     return 0;
 }
+
