@@ -14,7 +14,17 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-
+    int N, arr[101], dp[101][101];
+    memset(dp, 0, sizeof(dp));
+    cin >> N;
+    for (int i = 1; i <= N; ++i) cin >> arr[i];
+    for (int i = 1; i <= N; ++i) {
+        for (int j = 0; j <= i / 2; ++j) {
+            int a = j, b = i - j;
+            a
+            dp[a][b] = min()
+        }
+    }
 
     return 0;
 }

@@ -10,32 +10,35 @@ typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
+ll N, B, C, ans = 0, arr[1111111];
+ll a, b, c;
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int N, arr[10000];
-    cin >> N;
+    cin >> N >> B >> C;
+    if (B < C) C = B;
+    a = B, b = B + C, c = B + C * 2;
     for (int i = 0; i < N; ++i) cin >> arr[i];
-
-    int sum = 1, ans = 0;
-    while (sum != 0) {
-        sum = 0;
-        for (int i = 0; i < N; ++i) {
-            if (i < N - 2 && arr[i] && arr[i + 1] && arr[i + 2]) {
-                arr[i]--; arr[i + 1]--; arr[i + 2]--;
-                ans += 7;
-            }
-            else if (i < N - 1 && arr[i] && arr[i + 1]) {
-                arr[i]--; arr[i + 1]--;
-                ans += 5;
-            }
-            else if (arr[i]) {
-                arr[i]--;
-                ans += 3;
-            }
-            sum += arr[i];
+    for (int i = 0; i < N; ++i) {
+        if (arr[i + 1] > arr[i + 2]) {
+            int cnt = min(arr[i], arr[i + 1] - arr[i + 2]);
+            ans += cnt * b;
+            arr[i] -= cnt, arr[i + 1] -= cnt;
+            cnt = min({arr[i], arr[i + 1], arr[i + 2]});
+            ans += cnt * c;
+            arr[i] -= cnt, arr[i + 1] -= cnt, arr[i + 2] -= cnt;
         }
+        else {
+            int cnt = min({arr[i], arr[i + 1], arr[i + 2]});
+            ans += cnt * c;
+            arr[i] -= cnt, arr[i + 1] -= cnt, arr[i + 2] -= cnt;
+            cnt = min(arr[i], arr[i + 1]);
+            ans += cnt * b;
+            arr[i] -= cnt, arr[i + 1] -= cnt;
+        }
+        ans += arr[i] * a;
     }
     cout << ans << '\n';
 

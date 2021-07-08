@@ -15,19 +15,26 @@ int main() {
     cin.tie(nullptr);
 
     const int MOD = 1e9;
-    int N, sum = 0, dp[100][10];
+    int N, dp[100][10][1 << 10];
     cin >> N;
-    for (int i = 1; i < 10; ++i) dp[0][i] = 1;
-    for (int i = 1; i < N; ++i) {
+    for (int i = 1; i < 10; ++i) dp[0][i][1 << i] = 1;
+    for (int i = 0; i < N - 1; ++i) {
         for (int j = 0; j < 10; ++j) {
-            if (j > 0) { dp[i][j] += dp[i][j - 1]; dp[i][j] %= MOD; }
-            if (j < N - 1) { dp[i][j] += dp[i - 1][j + 1]; dp[i][j] %= MOD; }
+            for (int k = 0; k < (1 << 10); ++k) {
+                if (!dp[i][j][k]) continue;
+                if (j > 0) {
+                    int &n = dp[i + 1][j - 1][k | (1 << (j - 1))];
+                    n = (n + dp[i][j][k]) % MOD;
+                }
+                if (j < 9) {
+                    int &n = dp[i + 1][j + 1][k | (1 << (j + 1))];
+                    n = (n + dp[i][j][k]) % MOD;
+                }
+            }
         }
     }
-    for (int i = 0; i < 10; ++i) {
-        sum += dp[N - 1][i];
-        sum %= MOD;
-    }
+    int sum = 0;
+    for (int i = 0; i < 10; ++i) sum = (sum + dp[N - 1][i][(1 << 10) - 1]) % MOD;
     cout << sum << '\n';
 
     return 0;

@@ -10,18 +10,15 @@ typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
-void solve() {
-    ;
-}
-
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
     int T;
     cin >> T;
-    while (T--)
-        solve();
+    while (T--) {
+
+    }
 
     return 0;
 }

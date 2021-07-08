@@ -10,24 +10,22 @@ typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
-int N, M, a, b, mn = 1e9, arr[3000];
+const int MXN = 3003;
+int N, M, a, b, arr[MXN], dp[MXN][MXN];
 
-void dfs(int cur, int cnt) {
-    if (cur == M) {
-        mn = min(mn, cnt);
-        return;
-    }
-    if (cnt >= mn) return;
-
+int dfs(int i, int j) {
+    if (i >= M || j >= M) return 0;
+    if (dp[i][j] != -1) return dp[i][j];
+    int next = max(i, j) + 1, res = 1e9;
     int tmp = a;
-    a = arr[cur];
-    dfs(cur + 1, cnt + abs(tmp - arr[cur]));
+    a = arr[next];
+    res = min(res, dfs(next, j) + abs(tmp - arr[next]));
     a = tmp;
-
     tmp = b;
-    b = arr[cur];
-    dfs(cur + 1, cnt + abs(tmp - arr[cur]));
+    b = arr[next];
+    res = min(res, dfs(i, next) + abs(tmp - arr[next]));
     b = tmp;
+    return dp[i][j] = res;
 }
 
 int main() {
@@ -35,9 +33,9 @@ int main() {
     cin.tie(nullptr);
 
     cin >> N >> a >> b >> M;
-    for (int i = 0; i < M; ++i) cin >> arr[i];
-    dfs(0, 0);
-    cout << mn << '\n';
+    for (int i = 1; i <= M; ++i) cin >> arr[i];
+    memset(dp, -1, sizeof(dp));
+    cout << dfs(0, 0) << '\n';
 
     return 0;
 }

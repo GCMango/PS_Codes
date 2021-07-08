@@ -10,47 +10,60 @@ typedef long long ll;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 
-int N, W, arr[20002], dp[20002][3];
+int N, W, arr[10000][2], dp[10000][3];
 
-int dfs(int cur, int with, vector<bool> check) {
-    check[cur] = true;
-    int res = 0, pos = cur < N ? cur + N : cur - N;
-    if (!with) {
-        if (!check[pos] && arr[cur] + arr[pos] <= W) {
-            cout << arr[cur] << ' ' << arr[pos] << " 1\n";
-            res = max(res, dfs(pos, cur, check) + 1);
+int dfs(int n, int s, int c) {
+    if (n == N) return 0;
+    if (n == N - 1) {
+        if (!c) {
+            if (s) return 1;
+            return arr[n][0] + arr[n][1] <= W ? 1 : 2;
         }
-        pos = (cur - 1) % N == 0 ? cur - 1 + N : cur - 1;
-        if (!check[pos] && arr[cur] + arr[pos] <= W) {
-            cout << arr[cur] << ' ' << arr[pos] << " 2\n";
-            res = max(res, dfs(pos, cur, check) + 1);
-        }
-        pos = cur % N == 0 ? cur - N + 1 : cur + 1;
-        if (!check[pos] && arr[cur] + arr[pos] <= W) {
-            cout << arr[cur] << ' ' << arr[pos] << " 3\n";
-            res = max(res, dfs(pos, cur, check) + 1);
-        }
+        if (c == 3) return 0;
+        if (s == c || !s) return 1;
+        return 0;
     }
-    for (int i = 1; i <= N * 2; ++i)
-        if (i != cur && !check[i])
-            res = max(res, dfs(i, 0, check));
-    return res;
+    int &ret = dp[n][s];
+    if (ret != -1) return ret;
+    ret = 1e9;
+    if (s == 0) {
+        ret = min(dfs(n, 1, c), dfs(n, 2, c)) + 1;
+        ret = min(ret, dfs(n + 1, 0, c) + (arr[n][0] + arr[n][1] <= W ? 1 : 2));
+        if (arr[n][0] + arr[n + 1][0] <= W && arr[n][1] + arr[n + 1][1] <= W)
+            ret = min(ret, dfs(n + 2, 0, c) + 2);
+    }
+    else {
+        ret = dfs(n + 1, 0, c) + 1;
+        if (arr[n][2 - s] + arr[n + 1][2 - s] <= W)
+            ret = min(ret, dfs(n + 1, 3 - s, c) + 1);
+    }
+    return ret;
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int T;
-    cin >> T;
+    int T; cin >> T;
     while (T--) {
+        memset(dp, -1, sizeof(dp));
         cin >> N >> W;
-        for (int i = 1; i <= N * 2; ++i) cin >> arr[i];
-        int res = 0;
-        vector<bool> check(20002);
-        for (int i = 1; i <= N * 2; ++i)
-            res = max(res, dfs(i, 0, check));
-        cout << N * 2 - res << '\n';
+        for (int i = 0; i < N; ++i) cin >> arr[i][0];
+        for (int i = 0; i < N; ++i) cin >> arr[i][1];
+        int ans = dfs(0, 0, 0);
+        if (arr[0][0] + arr[N - 1][0] <= W) {
+            memset(dp, -1, sizeof(dp));
+            ans = min(ans, dfs(0, 1, 1) + 1);
+        }
+        if (arr[0][1] + arr[N - 1][1] <= W) {
+            memset(dp, -1, sizeof(dp));
+            ans = min(ans, dfs(0, 2, 2) + 1);
+        }
+        if (arr[0][0] + arr[N - 1][0] <= W && arr[0][1] + arr[N - 1][1] <= W) {
+            memset(dp, -1, sizeof(dp));
+            ans = min(ans, dfs(1, 0, 3) + 2);
+        }
+        cout << ans << '\n';
     }
 
     return 0;
